@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: sky-ai-test
+  ai:
+    ollama:
+      base-url: http://localhost:11434
+      chat:
+        model: mock-model
+    openai:
+      base-url: http://localhost:8080  # Mock server for testing
+      api-key: test-key
+      chat:
+        options:
+          model: mock-model
+      embedding:
+        options:
+          model: mock-embedding-model
+          dimensions: 1024
+  datasource:
+    driver-class-name: org.h2.Driver  # Use in-memory H2 for testing
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password: 
+  h2:
+    console:
+      enabled: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+logging:
+  level:
+    org.springframework.ai.chat.client.advisor: debug
+    com.sky.skyai: debug
+    org.springframework.ai: warn  # Reduce AI framework logging in tests

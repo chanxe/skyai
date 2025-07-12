@@ -31,3 +31,17 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Environment and Config ###
+.env
+.env.local
+.env.production
+.env.development
+
+### Docker ###
+docker-data/
+*.log
+
+### Application specific ###
+chat-pdf.properties
+*.pid
