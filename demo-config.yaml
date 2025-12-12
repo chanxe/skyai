@@ -18,8 +18,8 @@ spring:
           prefer-ip: true
       # Notification configuration
       notify:
-        # Feishu (飞书) notification - Configure your webhook URL
-        feishu:
+        # Custom Feishu (飞书) notification - Configure your webhook URL
+        custom-feishu:
           enabled: true
           webhook-url: https://open.feishu.cn/open-apis/bot/v2/hook/YOUR_WEBHOOK_TOKEN
         # DingTalk (钉钉) notification - Configure your webhook URL

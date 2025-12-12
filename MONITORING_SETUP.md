@@ -174,10 +174,10 @@ export MAIL_PASSWORD=your-password
 
 1. **Spring Boot Admin Server**: 提供监控面板和管理功能
 2. **Spring Boot Admin Client**: 注册到 Server 并报告状态
-3. **Notifiers**: 三个自定义通知器
-   - `FeishuNotifier`: 飞书通知
-   - `DingTalkNotifier`: 钉钉通知
-   - `EmailNotifier`: 邮件通知
+3. **Notifiers**: 通知器（混合使用自定义和内置）
+   - `CustomFeishuNotifier`: 自定义飞书通知器
+   - Built-in `DingTalkNotifier`: 内置钉钉通知器
+   - Built-in `MailNotifier`: 内置邮件通知器
 
 ### 工作流程
 
