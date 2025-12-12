@@ -1,3 +1,6 @@
+server:
+  port: 8080
+
 spring:
   application:
     name: sky-ai
@@ -21,7 +24,59 @@ spring:
     url: jdbc:mysql://localhost:3306/itheima?serverTimezone=Asia/Shanghai&useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&tinyInt1isBit=false&allowPublicKeyRetrieval=true&allowMultiQueries=true&useServerPrepStmts=false
     username: root
     password: 123456
+    continue-on-error: true
+  sql:
+    init:
+      mode: never
+  boot:
+    admin:
+      # Spring Boot Admin Server configuration
+      context-path: /admin
+      # Spring Boot Admin Client configuration
+      client:
+        url: http://localhost:8080/admin
+        instance:
+          prefer-ip: true
+      # Notification configuration
+      notify:
+        # Custom Feishu (飞书) notification
+        custom-feishu:
+          enabled: false
+          webhook-url: ${FEISHU_WEBHOOK_URL:}
+        # DingTalk (钉钉) notification - using built-in notifier
+        dingtalk:
+          enabled: false
+          webhook-url: ${DINGTALK_WEBHOOK_URL:}
+        # Email notification - using built-in notifier
+        mail:
+          enabled: false
+          to: ${NOTIFICATION_EMAIL_TO:}
+          from: ${NOTIFICATION_EMAIL_FROM:noreply@example.com}
+  # Mail configuration (optional, required if email notification is enabled)
+  mail:
+    host: ${MAIL_HOST:smtp.example.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+# Actuator configuration for monitoring
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
 logging:
   level:
     org.springframework.ai.chat.client.advisor: debug
     com.sky.skyai: debug
+    de.codecentric.boot.admin: info

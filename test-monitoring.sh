@@ -1,0 +1,57 @@
+#!/bin/bash
+
+# Test script for Spring Boot Admin monitoring platform
+# This script demonstrates how to test the notification functionality
+
+echo "==================================="
+echo "Spring Boot Admin Monitoring Test"
+echo "==================================="
+echo ""
+
+echo "This test will:"
+echo "1. Start the Spring Boot application (triggers UP notification)"
+echo "2. Wait for 20 seconds"
+echo "3. Stop the application (triggers DOWN notification)"
+echo ""
+
+# Check if application.yaml has notification enabled
+echo "Checking notification configuration..."
+if grep -q "enabled: true" src/main/resources/application.yaml; then
+    echo "✅ Notifications are enabled in application.yaml"
+else
+    echo "⚠️  Notifications are not enabled. To enable:"
+    echo "   - Set spring.boot.admin.notify.feishu.enabled=true"
+    echo "   - Set spring.boot.admin.notify.dingtalk.enabled=true"
+    echo "   - Set spring.boot.admin.notify.mail.enabled=true"
+    echo "   - Configure webhook URLs or mail settings"
+fi
+echo ""
+
+echo "Starting application..."
+echo "The application will register itself with Admin Server"
+echo "You can access the admin panel at: http://localhost:8080/admin"
+echo ""
+
+# Build the application first
+echo "Building application..."
+mvn clean package -DskipTests
+
+if [ $? -eq 0 ]; then
+    echo "✅ Build successful!"
+    echo ""
+    echo "Starting application (this will trigger UP notification)..."
+    echo "Press Ctrl+C to stop the application (this will trigger DOWN notification)"
+    echo ""
+    
+    # Start the application (using wildcard to handle version changes)
+    JAR_FILE=$(find target -name "sky-ai-*.jar" -not -name "*-original.jar" | head -n 1)
+    if [ -f "$JAR_FILE" ]; then
+        java -jar "$JAR_FILE"
+    else
+        echo "❌ JAR file not found!"
+        exit 1
+    fi
+else
+    echo "❌ Build failed!"
+    exit 1
+fi
