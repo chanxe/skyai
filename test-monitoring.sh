@@ -43,8 +43,14 @@ if [ $? -eq 0 ]; then
     echo "Press Ctrl+C to stop the application (this will trigger DOWN notification)"
     echo ""
     
-    # Start the application
-    java -jar target/sky-ai-0.0.1-SNAPSHOT.jar
+    # Start the application (using wildcard to handle version changes)
+    JAR_FILE=$(find target -name "sky-ai-*.jar" -not -name "*-original.jar" | head -n 1)
+    if [ -f "$JAR_FILE" ]; then
+        java -jar "$JAR_FILE"
+    else
+        echo "❌ JAR file not found!"
+        exit 1
+    fi
 else
     echo "❌ Build failed!"
     exit 1

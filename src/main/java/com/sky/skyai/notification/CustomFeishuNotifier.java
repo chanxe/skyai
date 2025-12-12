@@ -86,9 +86,14 @@ public class CustomFeishuNotifier extends AbstractEventNotifier {
             body.put("content", content);
 
             HttpEntity<Map<String, Object>> entity = new HttpEntity<>(body, headers);
-            restTemplate.postForEntity(webhookUrl, entity, String.class);
+            var response = restTemplate.postForEntity(webhookUrl, entity, String.class);
             
-            log.info("Feishu notification sent successfully: {}", message);
+            if (response.getStatusCode().is2xxSuccessful()) {
+                log.info("Feishu notification sent successfully: {}", message);
+            } else {
+                log.warn("Feishu notification may have failed. Status: {}, Response: {}", 
+                        response.getStatusCode(), response.getBody());
+            }
         } catch (Exception e) {
             log.error("Failed to send Feishu notification", e);
         }
