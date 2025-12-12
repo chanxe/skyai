@@ -1,0 +1,60 @@
+# Demo configuration file for testing notifications
+# Copy this to application-demo.yaml and configure your webhook URLs and email settings
+
+server:
+  port: 8080
+
+spring:
+  application:
+    name: sky-ai-demo
+  boot:
+    admin:
+      # Spring Boot Admin Server configuration
+      context-path: /admin
+      # Spring Boot Admin Client configuration
+      client:
+        url: http://localhost:8080/admin
+        instance:
+          prefer-ip: true
+      # Notification configuration
+      notify:
+        # Feishu (飞书) notification - Configure your webhook URL
+        feishu:
+          enabled: true
+          webhook-url: https://open.feishu.cn/open-apis/bot/v2/hook/YOUR_WEBHOOK_TOKEN
+        # DingTalk (钉钉) notification - Configure your webhook URL
+        dingtalk:
+          enabled: true
+          webhook-url: https://oapi.dingtalk.com/robot/send?access_token=YOUR_TOKEN
+        # Email notification - Configure your mail server
+        mail:
+          enabled: false
+          to: recipient@example.com
+          from: noreply@example.com
+  # Mail configuration (required if email notification is enabled)
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: your-email@gmail.com
+    password: your-app-password
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+# Actuator configuration for monitoring
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    com.sky.skyai: debug
+    de.codecentric.boot.admin: info
